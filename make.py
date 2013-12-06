@@ -14,7 +14,13 @@ if os.path.getmtime('make.py') > build_time:
 else:
   build_all = False
 
-py_cmds = ['plot-vortices.py']
+
+py_cmds = []
+slice_cmds = ['B y']#, 'B z', 'E x', 'S y', 'S z']
+for cmd in slice_cmds:
+  py_cmds.append('plot-vortices.py slice ' + cmd)
+print py_cmds
+
 latex_docs = ['presentation.tex']
 
 for f in py_cmds:

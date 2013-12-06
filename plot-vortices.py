@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from __future__ import division
 import matplotlib, sys
-if 'hide' in sys.argv:
+if not 'show' in sys.argv:
   matplotlib.use('Agg')
 from pylab import *
 import matplotlib.animation as animation
@@ -9,86 +9,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.tri as mtri
 
 import optical_vortex as vort
-# X = 0 # coordinate indices
-# Y = 1
-# Z = 2
 
-# delta = 1e-5 # finite delta
-
-# # physical constants
-# c = 1
-# epsilon = 1
-# mu = 1/(epsilon*c*c)
-
-# # beam properties
-# omega = 100 # angular frequency
-# k = omega/c # wave vector
-# l = 3 # topological charge
-# p = 1 # radial index
-# A_0 = 1 # vector potential seed value
-# w_0 = 1 # minimum beam waist
-# z_R = k*w_0**2/2 # Rayleigh length
-
-# # actual beam waist
-# def w(z):
-#   return w_0*sqrt(1+(z/z_R)**2)
-
-# i = complex(0,1)
-
-# def factorial(n):
-#   return 1 if n == 0 else n * factorial(n-1)
-
-# # Associated Laguerre polynomial
-# def L(l,p,x):
-#   m = 0
-#   value = 0
-#   while m <= p:
-#     value += x**m * (-1)**m * factorial(p+l) \
-#               / ( factorial(p-m)*factorial(l+m)*factorial(m) )
-#     m += 1
-#   return value
-
-# # complex vector potential
-# # assumes that beam of light travels in the z direction
-# # vector potential is polarized in x direction
-# def A_x(l,p,x,y,z,t):
-#   r = sqrt(x**2 + y**2)
-#   phi = arctan(y/x)# if x != 0 else 0
-#   wz = w(z)
-#   return A_0 * w_0/wz * (r*sqrt(2)/wz)**l * L(l,p,2*(r/wz)**2) \
-#     * exp(-(r/wz)**2) * exp(-i*k*r**2*z/(2*(z**2+z_R**2))) \
-#     * exp(-i*l*phi) * exp(i*(2*p+l+1)*arctan(z/z_R)) * exp(-i*omega*t)
-
-# def A_I(x,y,z,t): # imaginary component of vector potential
-#   A = imag(A_x(l,p,x,y,z,t))
-#   A[x<0] *= -1
-#   return A
-
-# def E_x(x,y,z,t): # electric field, in x direction
-#   return -omega * A_I(x,y,z,t)
-
-# def B_y(x,y,z,t): # magnetic field, in y direction
-#   return -k * A_I(x,y,z,t)
-
-# def u(x,y,z,t): # energy density
-#   return epsilon * omega**2 * A_I(x,y,z,t)**2
-
-# def I(x,y,z,t): # intensity
-#   return c / 2 * u(x,y,z,t)
-
-# def S_z(x,y,z,t): # poynting vector, in z direction
-#   return c * u(x,y,z,t)
-
-# def sigma(i,j,x,y,z,t): # Maxwell stress tensor
-#   return u(x,y,z,t) if i == j else 0
-
-# def f(x,y,z,t): # force per unit volume
-#   f = zeros(3)
-#   u_0 = u(x,y,z,t)
-#   f[X] = (u(x+delta,y,z,t)-u_0)/delta
-#   f[Y] = (u(x,y+delta,z,t)-u_0)/delta
-#   f[Z] = (u(x,y,z+delta,t)-u_0)/delta - (u(x,y,z,t+delta)-u_0)/delta/c
-#   return f,sqrt(f[X]**2 + f[Y]**2 + f[Z]**2)
 
 diff = .001
 xlo = .5 - diff
@@ -230,15 +151,40 @@ if 'paper' in sys.argv:
 
 
 
-if 'anim' in sys.argv:
+if 'slice' in sys.argv:
   fig = figure()
   ax = fig.add_subplot(111)
   z = 0
   t = 0
   im = pcolormesh(x, y, vort.E(x, y, z, t)[0], cmap=cmap)
 
+  if 'B' in sys.argv:
+    name = 'B'
+  elif 'E' in sys.argv:
+    name = 'E'
+  else:
+    name = 'S'
+
+  if 'x' in sys.argv:
+    name += 'x'
+  elif 'y' in sys.argv:
+    name += 'y'
+  else:
+    name += 'z'
+
   def update(x, y, z, t):
-    return vort.S(x, y, z, t)[1]
+    if 'B' in name:
+      F = vort.B(x,y,z,t)
+    elif 'E' in name:
+      F = vort.E(x,y,z,t)
+    else:
+      F = vort.S(x,y,z,t)
+
+    if 'x' in name:
+      return F[0]
+    elif 'y' in name:
+      return F[1]
+    return F[2]
 
   F = update(x, y, z, t)
   vmax = max(F.flat)
@@ -247,32 +193,20 @@ if 'anim' in sys.argv:
     clf()
     F = update(x, y, z, t)
     # vmax = max(F.flat)
-    im = pcolormesh(x, y, F, cmap=cmap, vmax=vmax, vmin=-vmax)
+    im = contourf(x, y, F, 50, cmap=cmap, vmax=vmax, vmin=-vmax)
     #colorbar(im)
     ax.set_aspect('equal')
     return im,
 
+  tmax = 2*pi/vort.omega
+  i = 0
+  for t in linspace(0, tmax, 15):
+    update_contour_plot(t)
+    fname = 'anim/slice-%s-%02i.pdf' %(name, i)
+    print 'saving', fname
+    savefig(fname)
+    i += 1
 
-  ani = animation.FuncAnimation(
-    fig, update_contour_plot, frames=xrange(10000), fargs=(t), interval=1)
-
-  show()
-
-if 'slices' in sys.argv:
-  zmin = 0
-  zmax = 9
-  zstep = 3
-
-  fig = figure()
-  ax = fig.add_subplot(111, projection='3d')
-  x = arange(-xmax, xmax, .1)
-  y = arange(-xmax, xmax, .1)
-  x, y = meshgrid(x, y)
-
-  for z in xrange(zmin, zmax, zstep):
-    E = E_x(x, y, z, t)
-    E[abs(E) < .1] = nan
-    ax.contourf(x, y, E, cmap=cmap, offset = z)
   show()
 
 if '3d' in sys.argv:
