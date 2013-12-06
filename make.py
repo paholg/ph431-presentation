@@ -15,12 +15,16 @@ else:
   build_all = False
 
 py_cmds = ['plot-vortices.py']
-latex_docs = []
+latex_docs = ['presentation.tex']
 
 for f in py_cmds:
   if os.path.getmtime(f.split(' ')[0]) > build_time or build_all:
     print 'Running: python', f
     subprocess.call(['python'] + f.split(' '))
+for f in latex_docs:
+  if os.path.getmtime(f.split(' ')[0]) > build_time or build_all:
+    print 'Running: latex', f
+    subprocess.call(['pdflatex'] + f.split(' '))
 
 
 print 'all done, updating time'
