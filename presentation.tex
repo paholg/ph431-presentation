@@ -1,0 +1,33 @@
+\documentclass[]{beamer}
+% \usepackage{beamerthemelined}
+\usepackage{pstricks}
+\usepackage{amsfonts,amssymb,amsmath,amsthm}
+\usepackage{graphicx}
+\usepackage[]{animate}
+\usepackage{wallpaper}
+% \setbeamertemplate{navigation symbols}{}
+\beamertemplatenavigationsymbolsempty
+
+\usetheme{Boadilla}
+\usecolortheme{whale}
+\setbeamertemplate{itemize items}[triangle]
+
+
+\title{}
+\author{Paho Lurie-Gregg}
+\date{}
+
+\newcommand{\f}[2]{\dfrac{#1}{#2}}
+\newcommand{\p}[1]{\left(#1\right)}
+\renewcommand{\t}[1]{\text{#1}}
+\newcommand{\abs}[1]{\left|#1\right|}
+
+\begin{document}
+\begin{frame}
+
+  \begin{figure}[h]
+    \centering
+    \animategraphics[width=\columnwidth, loop]{10}{anim/test-}{01}{39}
+  \end{figure}
+\end{frame}
+\end{document}

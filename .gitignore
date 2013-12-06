@@ -1,0 +1,10 @@
+*.pdf
+*.png
+*\~
+*.out
+*.aux
+*.log
+*.nav
+*.snm
+*.toc
+auto
