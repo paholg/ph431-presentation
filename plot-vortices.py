@@ -10,6 +10,7 @@ import matplotlib.tri as mtri
 
 import optical_vortex as vort
 
+nframes = 30
 
 diff = .05
 xlo = .5 - diff
@@ -187,22 +188,21 @@ if 'slice' in sys.argv:
     # vmax = max(F.flat)
     im = contourf(x, y, F, 20, cmap=cmap, vmax=vmax, vmin=-vmax)
 
-    rcParams.update({'font.size':14, 'legend.fontsize':8})
+    rcParams.update({'font.size':24, 'legend.fontsize':8})
     ax.set_xlabel('$x/w_0$')
     ax.set_ylabel('$y/w_0$')
     tit = '$' + name[0] + '_' + name[1] + '$'
-    ax.set_title(tit)
+    ax.text(0, 5.6, tit, horizontalalignment='center', fontsize='30')
     ax.axis('equal')
-    #tight_layout()
+    tight_layout()
     ylim(-1, 1)
 
     fname = 'anim/slice-%s-%02i.pdf' %(name, i)
-    print 'saving', fname
+    #print 'saving', fname
     savefig(fname)
 
 
     return im,
-
   z = 0
   t = 0
 
@@ -216,7 +216,7 @@ if 'slice' in sys.argv:
   update_contour_plot(0, 0)
   show()
 
-  for t in linspace(0, tmax, 15):
+  for t in linspace(0, tmax, nframes):
     update_contour_plot(t, i)
 
     i += 1
@@ -232,8 +232,8 @@ if '3d' in sys.argv:
 
   frame = 0
   t = 0
-  frames = 15
-  dt = 2*pi/vort.omega/frames
+
+  dt = 2*pi/vort.omega/nframes
   import mayavi.mlab as mlab
   from tvtk.api import tvtk
 
@@ -241,7 +241,7 @@ if '3d' in sys.argv:
 
   xmax = 10
   dx = 1
-  zmax = 30
+  zmax = 25
   x,y,z = mgrid[-xmax:xmax:dx, -xmax:xmax:dx, 0:zmax:dx]
 
   F = field(x, y, z, t)
@@ -251,15 +251,22 @@ if '3d' in sys.argv:
   q = mlab.quiver3d(x, y, z, *F)
   s = q.mlab_source
 
-  mlab.view(azimuth=180, elevation=75, roll=90, distance=60, focalpoint=(0, 0, zmax/2))
+  az = 15
+  mlab.outline(extent=[-xmax/2, xmax/2, -xmax/2, xmax/2, 0, zmax])
+  mlab.view(azimuth=az, elevation=70, roll=90, distance=75, focalpoint=(0, 0, zmax/2))
 
+  spin_dir = 1
   @mlab.animate(delay=100, ui=False)
   def anim():
-    global t, frame, F
+    global t, frame, F, az, spin_dir
     while True:
       print mlab.view(), mlab.roll()
       print frame, t
       t += dt
+      az += spin_dir*.5
+
+      mlab.view(azimuth=az, distance=60, focalpoint=(0, 0, zmax/2))
+
       F = field(x, y, z, t)
 
       s.set(u=F[0].reshape(size), v=F[1].reshape(size), w=F[2].reshape(size))
@@ -268,7 +275,9 @@ if '3d' in sys.argv:
       print 'saving', fname
       figure.scene.save(fname)
       frame += 1
-      if frame > frames:
+      if frame > nframes/2:
+        spin_dir = -1
+      if frame > nframes:
         exit(0)
 
 

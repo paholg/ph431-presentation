@@ -18,8 +18,8 @@ else:
 py_cmds = []
 mayavi_cmds = []
 
-slice_args = []#['B y', 'B z', 'E x', 'S y', 'S z']
-mayavi_args = ['3d']
+slice_args = ['B y', 'B z', 'E x', 'S y', 'S z']
+mayavi_args = ['3d E', '3d B', '3d S']
 
 latex_docs = ['presentation.tex']
 
