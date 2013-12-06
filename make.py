@@ -16,26 +16,34 @@ else:
 
 
 py_cmds = []
-slice_cmds = ['B y', 'B z', 'E x', 'S y', 'S z']
-for cmd in slice_cmds:
-  py_cmds.append('plot-vortices.py slice ' + cmd)
-print py_cmds
-
 mayavi_cmds = []
 
+slice_args = []#['B y', 'B z', 'E x', 'S y', 'S z']
+mayavi_args = ['3d']
+
 latex_docs = ['presentation.tex']
+
+
+for arg in slice_args:
+  py_cmds.append('plot-vortices.py slice ' + arg)
+
+for arg in mayavi_args:
+  mayavi_cmds.append('plot-vortices.py ' + arg)
+
+print py_cmds
+print mayavi_cmds
 
 for f in py_cmds:
   if os.path.getmtime(f.split(' ')[0]) > build_time or build_all:
     print 'Running: python', f
     subprocess.call(['python'] + f.split(' '))
 
-xcmd = ['xvfb-run', '-n', '99', '--server-args="-screen 0 1024x768x24"']
+xcmd = 'xvfb-run -n 99 --server-args="-screen 0 1024x768x24" ./'
 
 for f in mayavi_cmds:
   if os.path.getmtime(f.split(' ')[0]) > build_time or build_all:
-    print 'Running:', xcmd, f
-    subprocess.call(xcmd + f.split(' '))
+    print 'Running:', xcmd + f
+    subprocess.call(xcmd + f, shell=True)
 
 
 

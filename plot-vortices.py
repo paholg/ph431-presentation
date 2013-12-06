@@ -160,7 +160,7 @@ if 'x' in sys.argv:
   name += 'x'
 elif 'y' in sys.argv:
   name += 'y'
-else:
+elif 'z' in sys.argv:
   name += 'z'
 
 
@@ -223,53 +223,53 @@ if 'slice' in sys.argv:
 
 
 if '3d' in sys.argv:
+  def field(x, y, z, t):
+    if 'B' in name:
+      return vort.B(x, y, z, t)
+    elif 'E' in name:
+      return vort.E(x, y, z, t)
+    return vort.S(x, y, z, t)
+
   frame = 0
   t = 0
-  dt = 0.001
+  frames = 15
+  dt = 2*pi/vort.omega/frames
   import mayavi.mlab as mlab
   from tvtk.api import tvtk
 
-  figure = mlab.figure(bgcolor=(1,1,1), fgcolor=(0,0,0), size=(1024,768))
-  mlab.view(azimuth=-153, elevation=-97, roll=-95, distance=61, focalpoint=(0, 0, 0))
+  figure = mlab.figure(bgcolor=(1,1,1), fgcolor=(0,0,0), size=(500,768))
 
   xmax = 10
   dx = 1
   zmax = 30
   x,y,z = mgrid[-xmax:xmax:dx, -xmax:xmax:dx, 0:zmax:dx]
-  E = vort.E(x, y, z, t)
-  B = vort.B(x, y, z, t)
-  S = vort.S(x, y, z, t)
-  u = vort.u(x, y, z, t)
 
-  size = E[0].shape[0]*E[0].shape[1]*E[0].shape[2]
+  F = field(x, y, z, t)
 
-  # qe = mlab.quiver3d(x, y, z, *E)
-  # se = qe.mlab_source
+  size = F[0].shape[0]*F[0].shape[1]*F[0].shape[2]
 
-  # qb = mlab.quiver3d(x, y, z, *B)
-  # sb = qb.mlab_source
+  q = mlab.quiver3d(x, y, z, *F)
+  s = q.mlab_source
 
-  qs = mlab.quiver3d(x, y, z, *S)
-  ss = qs.mlab_source
-
+  mlab.view(azimuth=180, elevation=75, roll=90, distance=60, focalpoint=(0, 0, zmax/2))
 
   @mlab.animate(delay=100, ui=False)
   def anim():
-    global t, frame, E, B, S
+    global t, frame, F
     while True:
       print mlab.view(), mlab.roll()
       print frame, t
       t += dt
-      E = vort.E(x, y, z, t)
-      B = vort.B(x, y, z, t)
-      S = vort.S(x, y, z, t)
+      F = field(x, y, z, t)
 
-      # se.set(u=E[0].reshape(size), v=E[1].reshape(size), w=E[2].reshape(size))
-      # sb.set(u=B[0].reshape(size), v=B[1].reshape(size), w=B[2].reshape(size))
-      ss.set(u=S[0].reshape(size), v=S[1].reshape(size), w=S[2].reshape(size))
+      s.set(u=F[0].reshape(size), v=F[1].reshape(size), w=F[2].reshape(size))
       yield
-      # figure.scene.save("anim/test-%02i.png" %frame)
+      fname = "anim/3d-%s-%02i.png" %(name, frame)
+      print 'saving', fname
+      figure.scene.save(fname)
       frame += 1
+      if frame > frames:
+        exit(0)
 
 
   a = anim()
