@@ -1,7 +1,7 @@
 \documentclass[xcolor=dvipsnames]{beamer}
 \usepackage{beamerthemelined}
 \usepackage{pstricks}
-\usepackage{animate}
+\usepackage[]{animate}
 \usepackage{graphicx}
 
 \setbeamertemplate{navigation symbols}{}
@@ -190,7 +190,8 @@
     \column{.5\textwidth}
     \begin{figure}[h]
       \centering
-      \animategraphics[width=1.15\columnwidth, loop, autoplay]
+      \vspace{-.2in}
+      \animategraphics[width=\columnwidth, loop, autoplay]
       {5}{anim/slice-Ex-}{00}{29}
     \end{figure}
 
@@ -198,7 +199,7 @@
     \begin{figure}[h]
       \centering
       \vspace{-.6in}
-      \animategraphics[width=.8\columnwidth, loop, autoplay]
+      \animategraphics[width=.9\columnwidth, loop, autoplay]
       {5}{anim/3d-E-}{00}{29}
     \end{figure}
 
@@ -206,13 +207,25 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Electric Field}
+  \begin{figure}[h]
+    \centering
+    \animategraphics[width=\columnwidth, loop, autoplay]
+    {5}{anim/sliceZ-Ex-}{00}{29}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}
   \frametitle{Magnetic Field}
   \begin{columns}[T,totalwidth=\textwidth]
     \column{.5\textwidth} \vspace{-.3in}
     \begin{figure}[h]
-      \centering \animategraphics[width=.85\columnwidth, loop,
-      autoplay] {5}{anim/slice-By-}{00}{29}
-      \animategraphics[width=.85\columnwidth, loop, autoplay]
+      \centering
+      \animategraphics [width=.6\columnwidth, loop, autoplay, final]
+      {5}{anim/slice-By-}{00}{29}
+
+      \animategraphics[width=.6\columnwidth, loop, autoplay, final]
       {5}{anim/slice-Bz-}{00}{29}
     \end{figure}
 
@@ -226,13 +239,26 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Magnetic Field}
+  \begin{figure}[h]
+    \centering
+    \animategraphics[width=.6\columnwidth, loop, autoplay]
+    {5}{anim/sliceZ-By-}{00}{29}
+    \centering
+    \animategraphics[width=.6\columnwidth, loop, autoplay]
+    {5}{anim/sliceZ-Bz-}{00}{29}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
   \frametitle{Poynting Vector} \vspace{1mm}
   \begin{columns}[T,totalwidth=\textwidth]
     \column{.5\textwidth} \vspace{-.3in}
     \begin{figure}[h]
-      \centering \animategraphics[width=.85\columnwidth, loop,
-      autoplay] {5}{anim/slice-Sy-}{00}{29}
-      \animategraphics[width=.85\columnwidth, loop, autoplay]
+      \centering
+      \animategraphics[width=.6\columnwidth, loop, autoplay]
+      {5}{anim/slice-Sy-}{00}{29}
+      \animategraphics[width=.6\columnwidth, loop, autoplay]
       {5}{anim/slice-Sz-}{00}{29}
     \end{figure}
     \column{.5\textwidth}
@@ -241,6 +267,17 @@
       loop, autoplay] {5}{anim/3d-S-}{00}{29}
     \end{figure}
   \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Poynting Vector}
+  \begin{figure}[h]
+    \centering
+    \animategraphics[width=.6\columnwidth, loop, autoplay]
+    {5}{anim/sliceZ-Sy-}{00}{29}
+    \animategraphics[width=.6\columnwidth, loop, autoplay]
+    {5}{anim/sliceZ-Sz-}{00}{29}
+  \end{figure}
 \end{frame}
 
 \begin{frame}

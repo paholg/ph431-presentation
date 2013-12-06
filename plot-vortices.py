@@ -123,11 +123,12 @@ def plot_all(x, y, z, t, plane='z'):
         savefig('figs/'+fname)
 
 xmax = 5
-zmax = 10
+zmax = 45
 dx = .05
 x = arange(-xmax, xmax+dx/2, dx)
 y = arange(-xmax, xmax+dx/2, dx)
 x, y = meshgrid(x, y)
+z = 0
 
 A = vort.A(x, y, 0, 0)
 E = vort.E(x, y, 0, 0)
@@ -164,6 +165,14 @@ elif 'y' in sys.argv:
 elif 'z' in sys.argv:
   name += 'z'
 
+xz_axis = False
+if 'Z' in sys.argv:
+  xz_axis = True
+  z = arange(0, zmax+dx/2, dx)
+  x = arange(-xmax, xmax+dx/2, dx)
+  z, x = meshgrid(z, x)
+  y = .75
+
 
 if 'slice' in sys.argv:
   def update(x, y, z, t):
@@ -182,28 +191,44 @@ if 'slice' in sys.argv:
 
   def update_contour_plot(t, i):
     #cla()
-    fig = figure()
+    size = (12, 6) if xz_axis else (4, 4)
+    fig = figure(figsize=size)
     ax = fig.add_subplot(111)
     F = update(x, y, z, t)
     # vmax = max(F.flat)
-    im = contourf(x, y, F, 20, cmap=cmap, vmax=vmax, vmin=-vmax)
+    if xz_axis:
+      xax = z
+      yax = x
+    else:
+      xax = x
+      yax = y
+    im = contourf(xax, yax, F, 20, cmap=cmap, vmax=vmax, vmin=-vmax)
 
-    rcParams.update({'font.size':24, 'legend.fontsize':8})
-    ax.set_xlabel('$x/w_0$')
-    ax.set_ylabel('$y/w_0$')
+    rcParams.update({'font.size':16, 'legend.fontsize':8})
     tit = '$' + name[0] + '_' + name[1] + '$'
-    ax.text(0, 5.6, tit, horizontalalignment='center', fontsize='30')
-    ax.axis('equal')
+    if xz_axis:
+      tit = '$' + name[0] + '_' + name[1] + '\quad y/w_0 = %0.2f$' %y
+    title(tit)
+    #ax.text(0, 5.6, tit, horizontalalignment='center', fontsize='30')
+    axes().set_aspect('equal', 'datalim')
     tight_layout()
-    ylim(-1, 1)
 
-    fname = 'anim/slice-%s-%02i.pdf' %(name, i)
-    #print 'saving', fname
+    if xz_axis:
+      ax.set_xlabel('$z/w_0$')
+      ax.set_ylabel('$x/w_0$')
+      xlim(0, zmax)
+      ylim(-5, 5)
+      fname = 'anim/sliceZ-%s-%02i.png' %(name, i)
+    else:
+      ax.set_xlabel('$x/w_0$')
+      ax.set_ylabel('$y/w_0$')
+      ylim(-1, 1)
+      fname = 'anim/slice-%s-%02i.png' %(name, i)
+    print 'saving', fname
     savefig(fname)
+    if not 'show' in sys.argv:
+      close()
 
-
-    return im,
-  z = 0
   t = 0
 
 
