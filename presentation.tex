@@ -1,26 +1,52 @@
-\documentclass[]{beamer}
-% \usepackage{beamerthemelined}
+\documentclass[xcolor=dvipsnames]{beamer}
+\usepackage{beamerthemelined}
 \usepackage{pstricks}
-\usepackage{amsfonts,amssymb,amsmath,amsthm}
-\usepackage{graphicx}
-\usepackage[]{animate}
-\usepackage{wallpaper}
-% \setbeamertemplate{navigation symbols}{}
-\beamertemplatenavigationsymbolsempty
 
-\usetheme{Boadilla}
-\usecolortheme{whale}
-\setbeamertemplate{itemize items}[triangle]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
 
+\usepackage{caption}
+\captionsetup{font=small}
+\captionsetup{labelfont={small,color=blue}}
 
-\title{}
-\author{Paho Lurie-Gregg}
-\date{}
+\usepackage{subcaption}
 
-\newcommand{\f}[2]{\dfrac{#1}{#2}}
-\newcommand{\p}[1]{\left(#1\right)}
-\renewcommand{\t}[1]{\text{#1}}
-\newcommand{\abs}[1]{\left|#1\right|}
+\usepackage{ifthen,xifthen}
+\newenvironment{items}[1][]
+{\begin{itemize}
+    \ifthenelse{\isempty{#1}}
+    {\setlength{\itemsep}{12pt}}{\setlength{\itemsep}{#1}}}
+  {\end{itemize}}
+
+%%% Standard math:
+\usepackage{amsfonts,amssymb,amsmath,amsthm} % Math packages
+\usepackage{braket} % Bra-ket notation stuff
+\newcommand{\st}{\displaystyle} % For making small math big
+\renewcommand{\t}{\text} % For text in math environment
+\renewcommand{\c}{\cdot} % Multiplication dot in math
+\newcommand{\f}[2]{\dfrac{#1}{#2}} % Shortcut for fractions
+\newcommand{\p}[1]{\left(#1\right)} % Parenthesis
+\renewcommand{\sp}[1]{\left[#1\right]} % Square parenthesis
+\renewcommand{\set}[1]{\left\{#1\right\}} % Curly parenthesis
+\newcommand{\abs}[1]{\left|#1\right|} % Absolute value
+
+%%% Physics symbols, vectors
+\renewcommand{\epsilon}{\varepsilon} % Prettier epsilon
+\renewcommand{\phi}{\varphi} % Prettier phi
+\renewcommand{\l}{\ell} % Prettier l
+\renewcommand{\v}[1]{\boldsymbol{\mathrm{#1}}} % Bold vectors
+\newcommand{\uv}[1]{\hat{\boldsymbol{\mathrm{#1}}}} % Unit vectors
+\newcommand{\del}{\v\nabla} % Del operator
+\renewcommand{\d}{\partial} % Partial d
+\newcommand{\fd}[2]{\f{d #1}{d #2}} % Derivative
+\newcommand{\sd}[2]{\f{d^2 #1}{d^2 #2}} % Derivative
+\newcommand{\fpd}[2]{\f{\d #1}{\d #2}} % Partial derivative
+\newcommand{\spd}[2]{\f{\d^2 #1}{\d^2 #2}} % Partial derivative
+
+\title{Optical Vortices (THIS BEGS FOR A NEW TITLE!!!111!!!@!@!!!!)}
+\author{Aaron Kratzer, Davit Grant, Paho Lurie-Gregg,
+  Michael Perlin, Grant Sherer}
+\date{06 December 2013}
 
 \begin{document}
 \begin{frame}
