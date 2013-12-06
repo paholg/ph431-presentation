@@ -9,8 +9,6 @@
 \captionsetup{font=small}
 \captionsetup{labelfont={small,color=blue}}
 
-\usepackage{subcaption}
-
 \usepackage{ifthen,xifthen}
 \newenvironment{items}[1][]
 {\begin{itemize}
@@ -51,19 +49,34 @@
 \begin{document}
 
 \begin{frame}
-	\frametitle{Generation-  Multilayer Spiral Phase Plate}
-	SiO$_2$ is deposited onto a substrate using an electron beam
-	\\Since the plate thickness varies with $\phi$, the phase develops the $\phi$ dependence that produces a helical wave front
-	\\\centering
-	\includegraphics[scale=.4]{MSPP.jpg}
-	\\\cite{MSPP}
+	\frametitle{Generation - Multilayer Spiral Phase Plate}
+  \begin{columns}[c]
+    \column{2.5in}
+    \begin{items}
+    \item SiO$_2$ is deposited onto a substrate using an electron beam
+    \item Since the plate thickness varies with $\phi$, the phase
+      develops the $\phi$ dependence that produces a helical wave
+      front
+    \end{items}
+    \column{2in}
+    \begin{figure}
+      \includegraphics[width=\columnwidth]{MSPP.jpg}
+      \caption{SiO$_2$ Phase Plate}
+      \label{MSPP}
+    \end{figure}
+  \end{columns}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Generation - Computer Generated Holography}
-	A reference wave and a particular object wave are combined to form an interference pattern.
-	\\The interference pattern is then produced as a hologram filament.
-	\\ When a beam propagates through this filament, the first order diffraction beam contains the optical vortex.
+  \begin{items}
+  \item A reference wave and a particular object wave are combined to
+    form an interference pattern.
+  \item The interference pattern is then produced as a hologram
+    filament.
+  \item When a beam propagates through this filament, the first order
+    diffraction beam contains the optical vortex.
+  \end{items}
 \end{frame}
 
 % \begin{frame}
