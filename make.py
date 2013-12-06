@@ -16,7 +16,7 @@ else:
 
 
 py_cmds = []
-slice_cmds = ['B y']#, 'B z', 'E x', 'S y', 'S z']
+slice_cmds = ['B y', 'B z', 'E x', 'S y', 'S z']
 for cmd in slice_cmds:
   py_cmds.append('plot-vortices.py slice ' + cmd)
 print py_cmds

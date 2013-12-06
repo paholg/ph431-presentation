@@ -11,7 +11,7 @@ import matplotlib.tri as mtri
 import optical_vortex as vort
 
 
-diff = .001
+diff = .05
 xlo = .5 - diff
 xhi = .5 + diff
 
@@ -149,29 +149,22 @@ if 'paper' in sys.argv:
   #   plot_all(x, y, z, t, 'x')
   show()
 
+if 'B' in sys.argv:
+  name = 'B'
+elif 'E' in sys.argv:
+  name = 'E'
+else:
+  name = 'S'
+
+if 'x' in sys.argv:
+  name += 'x'
+elif 'y' in sys.argv:
+  name += 'y'
+else:
+  name += 'z'
 
 
 if 'slice' in sys.argv:
-  fig = figure()
-  ax = fig.add_subplot(111)
-  z = 0
-  t = 0
-  im = pcolormesh(x, y, vort.E(x, y, z, t)[0], cmap=cmap)
-
-  if 'B' in sys.argv:
-    name = 'B'
-  elif 'E' in sys.argv:
-    name = 'E'
-  else:
-    name = 'S'
-
-  if 'x' in sys.argv:
-    name += 'x'
-  elif 'y' in sys.argv:
-    name += 'y'
-  else:
-    name += 'z'
-
   def update(x, y, z, t):
     if 'B' in name:
       F = vort.B(x,y,z,t)
@@ -186,28 +179,48 @@ if 'slice' in sys.argv:
       return F[1]
     return F[2]
 
-  F = update(x, y, z, t)
-  vmax = max(F.flat)
-
-  def update_contour_plot(t):
-    clf()
+  def update_contour_plot(t, i):
+    #cla()
+    fig = figure()
+    ax = fig.add_subplot(111)
     F = update(x, y, z, t)
     # vmax = max(F.flat)
-    im = contourf(x, y, F, 50, cmap=cmap, vmax=vmax, vmin=-vmax)
-    #colorbar(im)
-    ax.set_aspect('equal')
-    return im,
+    im = contourf(x, y, F, 20, cmap=cmap, vmax=vmax, vmin=-vmax)
 
-  tmax = 2*pi/vort.omega
-  i = 0
-  for t in linspace(0, tmax, 15):
-    update_contour_plot(t)
+    rcParams.update({'font.size':14, 'legend.fontsize':8})
+    ax.set_xlabel('$x/w_0$')
+    ax.set_ylabel('$y/w_0$')
+    tit = '$' + name[0] + '_' + name[1] + '$'
+    ax.set_title(tit)
+    ax.axis('equal')
+    #tight_layout()
+    ylim(-1, 1)
+
     fname = 'anim/slice-%s-%02i.pdf' %(name, i)
     print 'saving', fname
     savefig(fname)
+
+
+    return im,
+
+  z = 0
+  t = 0
+
+
+  F = update(x, y, z, t)
+  vmax = max(F.flat)
+
+  tmax = 2*pi/vort.omega
+  i = 0
+
+  update_contour_plot(0, 0)
+  show()
+
+  for t in linspace(0, tmax, 15):
+    update_contour_plot(t, i)
+
     i += 1
 
-  show()
 
 if '3d' in sys.argv:
   frame = 0
