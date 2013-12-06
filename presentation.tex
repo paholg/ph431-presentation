@@ -86,57 +86,19 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Vector potential}
-  \begin{align*}
-    {\cxv A}\p{r,\phi,z}&=A_0\f{w_0}{w}\sp{\f{r\sqrt 2}{w}}^\ell
-    L^{\p{\ell}}_p\sp{2\f{r^2}{w^2}}\exp\sp{-\f{r^2}{w^2}} \\
-    &~~~\times\exp\sp{-i\f{kr^2z}{2\p{z^2+z_R^2}}}
-    \exp\sp{i\p{2p+\ell+1}\arctan\p{\f z{z_R}}} \\
-    &~~~\times\exp\p{i\ell\phi}\exp\p{-i\omega t} \uv r \\
-    L^{\p{\ell}}_p\p{x}
-    &=\sum_{m=0}^p\p{-1}^m\f{\p{p+\ell}!}{\p{p-m}!\p{\ell+m}!m!}x^m \\
-    L^{\p{3}}_1\p{x}&=-x+4
-  \end{align*}
-\end{frame}
-
-\begin{frame}
-  \frametitle{EM fields}
-  \begin{align*}
-    \cxv E&=i\omega\cxv A \\
-    \cxv B&=\del \times\cxv A \\
-    &={\varepsilon^i}_{jk}\uv e_i\d^jA^k \\
-    &={\varepsilon^i}_{jk}\uv
-    e_i\sp{A^k\p{x^j+\delta}-A^k\p{x^j}}/\delta \\
-    \v S&=\v E\times\v B/\mu \\
-    u&=\f12\p{\epsilon\abs{\v E}^2+\abs{\v B}^2/\mu} \\
-    I&=\f{c\epsilon}2\abs{\v E}^2
-  \end{align*}
-\end{frame}
-
-\begin{frame}
-  \begin{align*}
-    \sigma_{ij}&=\epsilon\p{E_iE_j-\f12\delta_{ij}E^2}
-    +\f1\mu\p{B_iB_j-\f12\delta_{ij}B^2} \\
-    &=\delta_{ij}\f12\p{\epsilon
-      E^2+B^2/\mu}=\delta_{ij}u \\
-    f_i&=\d_k\sigma_{ik}-\d_tS_i/c^2=\d_iu-\delta_{iz}\d_tu/c
-  \end{align*}
-\end{frame}
-
-\begin{frame}
 	\frametitle{Application: Twisted Radio Waves}
 	\begin{center}
 		\emph{Single frequency, multiple channel encoding via vorticity}
 	\end{center}
   \begin{columns}[c]
-	\column{0.5\textwidth}
-  \begin{figure}
-		\includegraphics[width=\textwidth]{helical_dish}
-		\caption{A helical dish transmitter designed for the $\ell=1$
-      mode}
-		\label{pic:dish}
-  \end{figure}
-	\column{0.5\textwidth}
+    \column{0.5\textwidth}
+    \begin{figure}
+      \includegraphics[width=\textwidth]{helical_dish}
+      \caption{A helical dish transmitter designed for the $\ell=1$
+        mode}
+      \label{pic:dish}
+    \end{figure}
+    \column{0.5\textwidth}
 		\begin{items}
 		\item First test in radio spectrum
 		\item Public far field test
@@ -181,23 +143,58 @@
 Same carrier frequency (2.4GHz), 440 Hz and 1000 Hz audio signals were transmitted via the planar and twisted wave, respectively.
 \end{frame}
 
+\begin{frame}
+  \frametitle{Vector potential}
+  \begin{align*}
+    {\cxv A}\p{r,\phi,z}&=A_0\f{w_0}{w}\sp{\f{r\sqrt 2}{w}}^\ell
+    L^{\p{\ell}}_p\sp{2\f{r^2}{w^2}}\exp\sp{-\f{r^2}{w^2}} \\
+    &~~~\times\exp\sp{-i\f{kr^2z}{2\p{z^2+z_R^2}}}
+    \exp\sp{i\p{2p+\ell+1}\arctan\p{\f z{z_R}}} \\
+    &~~~\times\exp\p{i\ell\phi}\exp\p{-i\omega t} \uv r \\
+    L^{\p{\ell}}_p\p{x}
+    &=\sum_{m=0}^p\p{-1}^m\f{\p{p+\ell}!}{\p{p-m}!\p{\ell+m}!m!}x^m \\
+    L^{\p{3}}_1\p{x}&=-x+4
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Physical fields}
+  \begin{align*}
+    \cxv E&=i\omega\cxv A \\
+    \cxv B&=\del \times\cxv A \\
+    &={\varepsilon^i}_{jk}\uv e_i\d^jA^k \\
+    &={\varepsilon^i}_{jk}\uv
+    e_i\sp{A^k\p{x^j+\delta}-A^k\p{x^j}}/\delta \\
+    \v S&=\v E\times\v H \\
+    u&=\f12\p{\v E\c\v D+\v B\c\v H} \\
+    I&=\f c2\v E\c\v D
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Force per unit volume}
+  \begin{align*}
+    \sigma^{ij}&=\epsilon\p{E^iE^j-\f12\delta^i_j\abs{\v E}^2}
+    +\f1\mu\p{B^iB^j-\f12\delta^i_j\abs{\v B}^2} \\
+    \v f&=\del\c\sigma-\d_t\v S/c^2 \\
+    &=\p{\d^k\sigma^{ik}-\d_tS^i/c^2}\uv e_i
+  \end{align*}
+\end{frame}
+
 % Animation bullshit
 \begin{frame}
   \frametitle{Electric Field}
   \begin{columns}[T,totalwidth=\textwidth]
     \column{.5\textwidth}
     \begin{figure}[h]
-      \centering
-      \animategraphics[width=1.15\columnwidth, loop, autoplay]
-      {5}{anim/slice-Ex-}{00}{29}
+      \centering \animategraphics[width=1.15\columnwidth, loop,
+      autoplay] {5}{anim/slice-Ex-}{00}{29}
     \end{figure}
 
     \column{.5\textwidth}
     \begin{figure}[h]
-      \centering
-      \vspace{-.6in}
-      \animategraphics[width=.8\columnwidth, loop, autoplay]
-      {5}{anim/3d-E-}{00}{29}
+      \centering \vspace{-.6in} \animategraphics[width=.8\columnwidth,
+      loop, autoplay] {5}{anim/3d-E-}{00}{29}
     \end{figure}
 
   \end{columns}
@@ -206,46 +203,37 @@ Same carrier frequency (2.4GHz), 440 Hz and 1000 Hz audio signals were transmitt
 \begin{frame}
   \frametitle{Magnetic Field}
   \begin{columns}[T,totalwidth=\textwidth]
-    \column{.5\textwidth}
-    \vspace{-.3in}
+    \column{.5\textwidth} \vspace{-.3in}
     \begin{figure}[h]
-      \centering
-      \animategraphics[width=.85\columnwidth, loop, autoplay]
-      {5}{anim/slice-By-}{00}{29}
+      \centering \animategraphics[width=.85\columnwidth, loop,
+      autoplay] {5}{anim/slice-By-}{00}{29}
       \animategraphics[width=.85\columnwidth, loop, autoplay]
       {5}{anim/slice-Bz-}{00}{29}
     \end{figure}
 
     \column{.5\textwidth}
     \begin{figure}[h]
-      \centering
-      \vspace{-.4in}
-      \animategraphics[width=.8\columnwidth, loop, autoplay]
-      {5}{anim/3d-B-}{00}{29}
+      \centering \vspace{-.4in} \animategraphics[width=.8\columnwidth,
+      loop, autoplay] {5}{anim/3d-B-}{00}{29}
     \end{figure}
 
   \end{columns}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Poynting Vector}
+  \frametitle{Poynting Vector} \vspace{1mm}
   \begin{columns}[T,totalwidth=\textwidth]
-    \column{.5\textwidth}
-    \vspace{-.3in}
+    \column{.5\textwidth} \vspace{-.3in}
     \begin{figure}[h]
-      \centering
-      \animategraphics[width=.85\columnwidth, loop, autoplay]
-      {5}{anim/slice-Sy-}{00}{29}
+      \centering \animategraphics[width=.85\columnwidth, loop,
+      autoplay] {5}{anim/slice-Sy-}{00}{29}
       \animategraphics[width=.85\columnwidth, loop, autoplay]
       {5}{anim/slice-Sz-}{00}{29}
     \end{figure}
-
     \column{.5\textwidth}
     \begin{figure}[h]
-      \centering
-      \vspace{-.4in}
-      \animategraphics[width=.8\columnwidth, loop, autoplay]
-      {5}{anim/3d-S-}{00}{29}
+      \centering \vspace{-.4in} \animategraphics[width=.8\columnwidth,
+      loop, autoplay] {5}{anim/3d-S-}{00}{29}
     \end{figure}
 
   \end{columns}
