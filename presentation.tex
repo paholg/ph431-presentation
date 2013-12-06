@@ -1,17 +1,13 @@
 \documentclass[xcolor=dvipsnames]{beamer}
 \usepackage{beamerthemelined}
 \usepackage{pstricks}
+\usepackage[]{animate}
+\usepackage{graphicx}
 
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{caption}[numbered]
-
 \usepackage{caption}
-\captionsetup{font=small}
-\captionsetup{labelfont={small,color=blue}}
-
-\title{Investigating an Optical Vortex}
-\author{Paho Lurie-Gregg, Grant Sherer, David Grant, Michael Perlin, Aaron Kratzer}
-\date{\today}
+\captionsetup{textfont={small,bf,color=BlueViolet}}
+\captionsetup{labelformat=empty}
 
 \usepackage{ifthen,xifthen}
 \newenvironment{items}[1][]
@@ -22,17 +18,18 @@
 
 %%% Standard math:
 \usepackage{amsfonts,amssymb,amsmath,amsthm} % Math packages
-\usepackage{braket} % Bra-ket notation stuff
 \newcommand{\st}{\displaystyle} % For making small math big
 \renewcommand{\t}{\text} % For text in math environment
 \renewcommand{\c}{\cdot} % Multiplication dot in math
 \newcommand{\f}[2]{\dfrac{#1}{#2}} % Shortcut for fractions
 \newcommand{\p}[1]{\left(#1\right)} % Parenthesis
 \renewcommand{\sp}[1]{\left[#1\right]} % Square parenthesis
-\renewcommand{\set}[1]{\left\{#1\right\}} % Curly parenthesis
+\newcommand{\set}[1]{\left\{#1\right\}} % Curly parenthesis
 \newcommand{\abs}[1]{\left|#1\right|} % Absolute value
 
 %%% Physics symbols, vectors
+\let\vepsilon\epsilon
+\let\vphi\phi
 \renewcommand{\epsilon}{\varepsilon} % Prettier epsilon
 \renewcommand{\phi}{\varphi} % Prettier phi
 \renewcommand{\l}{\ell} % Prettier l
@@ -40,15 +37,16 @@
 \newcommand{\uv}[1]{\hat{\boldsymbol{\mathrm{#1}}}} % Unit vectors
 \newcommand{\del}{\v\nabla} % Del operator
 \renewcommand{\d}{\partial} % Partial d
-\newcommand{\fd}[2]{\f{d #1}{d #2}} % Derivative
-\newcommand{\sd}[2]{\f{d^2 #1}{d^2 #2}} % Derivative
-\newcommand{\fpd}[2]{\f{\d #1}{\d #2}} % Partial derivative
-\newcommand{\spd}[2]{\f{\d^2 #1}{\d^2 #2}} % Partial derivative
+\newcommand{\fd}[2]{\f{d #1}{d #2}} % First derivative
+\newcommand{\sd}[2]{\f{d^2 #1}{d^2 #2}} % Second derivative
+\newcommand{\fpd}[2]{\f{\d #1}{\d #2}} % First partial derivative
+\newcommand{\spd}[2]{\f{\d^2 #1}{\d^2 #2}} % Second partial derivative
+\newcommand{\cxv}[1]{\v{\widetilde{#1}}} % Complex variable
 
-\title{Optical Vortices (THIS BEGS FOR A NEW TITLE!!!111!!!@!@!!!!)}
+\title{Optical Vortices: Generation, Application, Investigation}
 \author{Aaron Kratzer, David Grant, Paho Lurie-Gregg,
   Michael Perlin, Grant Sherer}
-\date{06 December 2013}
+\date{6 December 2013}
 
 \begin{document}
 
@@ -57,14 +55,15 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Generation - Multilayer Spiral Phase Plate}
+        \frametitle{Generation - Multilayer Spiral Phase Plate}
   \begin{columns}[c]
-    \column{2.5in}
+    \column{0.6\textwidth}
     \begin{items}
-    \item Electron beam deposition of  SiO$_2$
-    \item $\phi$ dependence created through varying thickness of plate
+    \item SiO$_2$ is deposited onto a substrate using a vapor deposition
+    \item Plate thickness varies with $\phi\to$ phase
+      develops $\phi$ dependence
     \end{items}
-    \column{2in}
+    \column{0.4\textwidth}
     \begin{figure}
       \includegraphics[width=\columnwidth]{MSPP.jpg}
       \caption{SiO$_2$ Phase Plate}
@@ -74,102 +73,236 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Generation - Computer Generated Holography}
+        \frametitle{Generation - Computer Generated Holography}
   \begin{items}
-  \item Interference pattern produced using object and reference wave
-  \item Filament made from interference pattern
-  \item Diffraction occurs as beam goes through filament
-  \item First order diffraction beam contains vortex
+  \item Interference pattern formed from object and reference beams
+  \item Hologram filament printed of interference pattern
+  \item Diffraction occurs as beam passes through filament
+  \item First order diffraction beam contains optical vortex
   \end{items}
 \end{frame}
 
- \begin{frame}
-  \centering
-    \begin{align*}
-  \v A\p{r,\phi,z}&=A_0\f{w_0}{w}\sp{\f{r\sqrt 2}{w}}^\ell
-  L^{\p{\ell}}_p\sp{2\f{r^2}{w^2}}\exp\sp{-\f{r^2}{w^2}}
-  \exp\sp{-i\f{kr^2z}{2\p{z^2+z_R^2}}} \\
-  &~~~~\times\exp\sp{i\p{2p+\ell+1}\arctan\p{\f z{z_R}}}
-  \exp\p{i\ell\phi}\exp\p{-i\omega t} \uv x\\
-   w&=w_0\sqrt{1+z^2/z_R^2}\\
+\begin{frame}
+        \frametitle{Application: Twisted Radio Waves}
+        \begin{center}
+                \emph{Single frequency, multiple channel encoding via vorticity}
+        \end{center}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+    \begin{figure}
+      \includegraphics[width=\textwidth]{helical_dish}
+      \caption{A helical dish transmitter designed for the $\ell=1$
+        mode}
+      \label{pic:dish}
+    \end{figure}
+    \column{0.5\textwidth}
+                \begin{items}
+                \item First test in radio spectrum
+                \item Public far field test
+                \item Multiple radio signals transmitted on the same frequency
+                \end{items}
+        \end{columns}
+\end{frame}
+
+\begin{frame}
+        \frametitle{Application: Experimental Setup}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+                \begin{figure}
+      \includegraphics[width=\textwidth]{birdeyeview}
+      \caption{Transmission path}
+      \label{pic:birdeye}
+                \end{figure}
+    \column{0.5\textwidth}
+                \begin{items}
+                \item Transmitted distance $\gg$ radio wavelength
+                \item Transmitted at 2.414 GHz, $\Delta \nu = 15MHz$
+                \item Signals are frequency modulated, 400 Hz and 1000 Hz
+                \item Antennae have 16.5 dBi and 26 dBi
+                \end{items}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+        \frametitle{Application: Important Conclusions}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+                \begin{figure}
+      \includegraphics[width=\textwidth]{helical_wave}
+      \caption{A phase-modified beam produced by a parabolic, helical
+        dish}
+      \label{pic:prettydish}
+                \end{figure}
+    \column{0.5\textwidth}
+                \begin{items}
+                \item Real world senario
+                \item Vorticity preserved in far field
+                \item Independent, non-interfering, orthogonal signals
+                \item Can be used for long range communication
+                \end{items}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Vector potential}
+  \begin{align*}
+    {\cxv A}\p{r,\phi,z}&=A_0\f{w_0}{w}\sp{\f{r\sqrt 2}{w}}^\ell
+    L^{\p{\ell}}_p\sp{2\f{r^2}{w^2}}\exp\sp{-\f{r^2}{w^2}} \\
+    &~~~\times\exp\sp{-i\f{kr^2z}{2\p{z^2+z_R^2}}}
+    \exp\sp{i\p{2p+\ell+1}\arctan\p{\f z{z_R}}} \\
+    &~~~\times\exp\p{i\ell\phi}\exp\p{-i\omega t} \uv r \\
     L^{\p{\ell}}_p\p{x}
- & =\sum_{m=0}^p\p{-1}^m\f{\p{p+\ell}!}{\p{p-m}!\p{\ell+m}!m!}x^m\\
-  z_R&=\f12 kw_0^2
-\end{align*}
- \end{frame}
-
-\begin{frame}
-\begin{align*}
-  L^{\p{3}}_1\p{x}=-x+4\\
-  \v E=i\omega\v A &&& \v B=-\del \times\v A
-\end{align*}
+    &=\sum_{m=0}^p\p{-1}^m\f{\p{p+\ell}!}{\p{p-m}!\p{\ell+m}!m!}x^m \\
+    L^{\p{3}}_1\p{x}&=-x+4
+  \end{align*}
 \end{frame}
 
 \begin{frame}
-\begin{align*}
- u&=\f12\p{\epsilon E^2+B^2/\mu} \\
-  \v S&=\v E\times\v B/\mu \\
-    I&=\f{c\epsilon}2E^2=\f c2\epsilon\omega^2A_I^2=cu/2\\
-\end{align*}
+  \frametitle{Fields}
+  \begin{align*}
+    \cxv E&=i\omega\cxv A \\
+    \cxv B&=\del \times\cxv A \\
+    &={\varepsilon^i}_{jk}\uv e_i\d^jA^k \\
+    &={\varepsilon^i}_{jk}\uv
+    e_i\sp{A^k\p{x^j+\delta}-A^k\p{x^j}}/\delta \\
+    \v S&=\v E\times\v H \\
+    u&=\f12\p{\v E\c\v D+\v B\c\v H} \\
+    I&=\f c2\v E\c\v D
+  \end{align*}
 \end{frame}
 
 \begin{frame}
-\begin{align*}
- \sigma_{ij}&=\epsilon\p{E_iE_j-\f12\delta_{ij}E^2}
-  +\f1\mu\p{B_iB_j-\f12\delta_{ij}B^2} \\
-    &=\delta_{ij}\f12\p{\epsilon
-    E^2+B^2/\mu}=\delta_{ij}u\\
- f_i&=\d_k\sigma_{ik}-\d_tS_i/c^2=\d_iu-\delta_{iz}\d_tu/c
-\end{align*}
+  \frametitle{Force per unit volume}
+  \begin{align*}
+    \sigma^{ij}&=\epsilon\p{E^iE^j-\f12\delta^i_j\abs{\v E}^2}
+    +\f1\mu\p{B^iB^j-\f12\delta^i_j\abs{\v B}^2} \\
+    \v f&=\del\c\sigma-\d_t\v S/c^2 \\
+    &=\p{\d^k\sigma^{ik}-\d_tS^i/c^2}\uv e_i
+  \end{align*}
 \end{frame}
-% \begin{frame}
-%  \begin{figure}[h]
-%    \centering
-%    \animategraphics[width=\columnwidth, loop]{5}{anim/slice-By-}{00}{14}
-%  \end{figure}
-% \end{frame}
 
-% \begin{frame}
-%  \begin{figure}[h]
-%    \centering
-%    \animategraphics[width=\columnwidth, loop]{5}{anim/slice-Bz-}{00}{29}
-%  \end{figure}
-% \end{frame}
-
-% \begin{frame}
-%  \begin{figure}[h]
-%    \centering
-%    \animategraphics[width=\columnwidth, loop]{5}{anim/slice-Sy-}{00}{29}
-%  \end{figure}
-% \end{frame}
-
-% \begin{frame}
-%  \begin{figure}[h]
-%    \centering
-%    \animategraphics[width=\columnwidth, loop]{5}{anim/slice-Sz-}{00}{29}
-%  \end{figure}
-% \end{frame}
-
-%---begining of presentation---
-
-
-
-
-%-----Aaron's Application stuff--------
+% Animation bullshit
 \begin{frame}
-	\frametitle{Optical Vortex Application: Twisted Radio Waves}
-	\begin{center}
-		\emph{Encoding many channels in the same frequency through radio vorticity: first experimental test.}
-	\end{center}
-	\begin{minipage}{0.49\textwidth}
-	\includegraphics[width=\textwidth]{helical_dish}
-	\end{minipage}
-	\begin{minipage}{0.49\textwidth}
-		\begin{items}
-		\item Multiple signals transmitted on the same frequency.
-		\end{items}
-	\end{minipage}
+  \frametitle{Electric Field}
+  \begin{figure}[h]
+    \centering
+    \vspace{-.41in}
+    \animategraphics[width=.49\columnwidth, loop, autoplay]
+    {5}{anim/3d-E-}{00}{29}
+  \end{figure}
+\end{frame}
 
+\begin{frame}
+  \frametitle{Electric Field}
+  \begin{columns}[T,totalwidth=\textwidth]
+    \column{.36\textwidth}
+    \vspace{-.1in}
+    \begin{figure}[h]
+      \centering
+      \animategraphics[width=\columnwidth, loop, autoplay]
+      {5}{anim/slice-Ex-}{00}{29}
+    \end{figure}
+
+    \column{.64\textwidth}
+
+    \begin{figure}[h]
+      \centering
+      \animategraphics[width=\columnwidth, loop, autoplay]
+      {5}{anim/sliceZ-Ex-}{00}{29}
+    \end{figure}
+
+
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Magnetic Field}
+    \begin{figure}[h]
+      \centering
+      \vspace{-.41in}
+      \animategraphics[width=.49\columnwidth, loop, autoplay]
+      {5}{anim/3d-B-}{00}{29}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Magnetic Field}
+  \begin{columns}[T,totalwidth=\textwidth]
+    \column{.36\textwidth}
+    \vspace{-.3in}
+    \begin{figure}[h]
+      \centering
+      \animategraphics [width=.88\columnwidth, loop, autoplay]
+      {5}{anim/slice-By-}{00}{29}
+
+      \animategraphics[width=.88\columnwidth, loop, autoplay]
+      {5}{anim/slice-Bz-}{00}{29}
+    \end{figure}
+
+    \column{.64\textwidth}
+    \vspace{-.25in}
+    \begin{figure}[h]
+      \centering
+      \animategraphics[width=.88\columnwidth, loop, autoplay]
+      {5}{anim/sliceZ-By-}{00}{29}
+
+      \vspace{.2in}
+      \animategraphics[width=.88\columnwidth, loop, autoplay]
+      {5}{anim/sliceZ-Bz-}{00}{29}
+    \end{figure}
+
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Poynting Vector}
+    \begin{figure}[h]
+      \centering
+      \vspace{-.41in}
+      \animategraphics[width=.49\columnwidth, loop, autoplay]
+      {5}{anim/3d-S-}{00}{29}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Poynting Vector}
+  \begin{columns}[T,totalwidth=\textwidth]
+    \column{.36\textwidth}
+    \vspace{-.3in}
+    \begin{figure}[h]
+      \centering
+      \animategraphics [width=.88\columnwidth, loop, autoplay]
+      {5}{anim/slice-Sy-}{00}{29}
+
+      \animategraphics[width=.88\columnwidth, loop, autoplay]
+      {5}{anim/slice-Sz-}{00}{29}
+    \end{figure}
+
+    \column{.64\textwidth}
+    \vspace{-.25in}
+    \begin{figure}[h]
+      \centering
+      \animategraphics[width=.88\columnwidth, loop, autoplay]
+      {5}{anim/sliceZ-Sy-}{00}{29}
+
+      \vspace{.2in}
+      \animategraphics[width=.88\columnwidth, loop, autoplay]
+      {5}{anim/sliceZ-Sz-}{00}{29}
+    \end{figure}
+
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Contributions}
+  \begin{items}
+  \item \textbf{Aaron --} Application research, presentation
+  \item \textbf{David --} Background research
+  \item \textbf{Paho --} Figures
+  \item \textbf{Michael --} Derivations, presentation
+  \item \textbf{Grant --} Vortex generation research
+  \end{items}
 \end{frame}
 
 \end{document}

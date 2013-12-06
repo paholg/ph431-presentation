@@ -10,8 +10,9 @@ import matplotlib.tri as mtri
 
 import optical_vortex as vort
 
+nframes = 30
 
-diff = .001
+diff = .05
 xlo = .5 - diff
 xhi = .5 + diff
 
@@ -122,11 +123,12 @@ def plot_all(x, y, z, t, plane='z'):
         savefig('figs/'+fname)
 
 xmax = 5
-zmax = 10
+zmax = 45
 dx = .05
 x = arange(-xmax, xmax+dx/2, dx)
 y = arange(-xmax, xmax+dx/2, dx)
 x, y = meshgrid(x, y)
+z = 0
 
 A = vort.A(x, y, 0, 0)
 E = vort.E(x, y, 0, 0)
@@ -149,29 +151,30 @@ if 'paper' in sys.argv:
   #   plot_all(x, y, z, t, 'x')
   show()
 
+if 'B' in sys.argv:
+  name = 'B'
+elif 'E' in sys.argv:
+  name = 'E'
+else:
+  name = 'S'
+
+if 'x' in sys.argv:
+  name += 'x'
+elif 'y' in sys.argv:
+  name += 'y'
+elif 'z' in sys.argv:
+  name += 'z'
+
+xz_axis = False
+if 'Z' in sys.argv:
+  xz_axis = True
+  z = arange(0, zmax+dx/2, dx)
+  y = arange(-xmax, xmax+dx/2, dx)
+  z, y = meshgrid(z, y)
+  x = 0
 
 
 if 'slice' in sys.argv:
-  fig = figure()
-  ax = fig.add_subplot(111)
-  z = 0
-  t = 0
-  im = pcolormesh(x, y, vort.E(x, y, z, t)[0], cmap=cmap)
-
-  if 'B' in sys.argv:
-    name = 'B'
-  elif 'E' in sys.argv:
-    name = 'E'
-  else:
-    name = 'S'
-
-  if 'x' in sys.argv:
-    name += 'x'
-  elif 'y' in sys.argv:
-    name += 'y'
-  else:
-    name += 'z'
-
   def update(x, y, z, t):
     if 'B' in name:
       F = vort.B(x,y,z,t)
@@ -186,77 +189,121 @@ if 'slice' in sys.argv:
       return F[1]
     return F[2]
 
+  def update_contour_plot(t, i):
+    #cla()
+    size = (12, 6) if xz_axis else (4, 4)
+    fig = figure(figsize=size)
+    ax = fig.add_subplot(111)
+    F = update(x, y, z, t)
+    # vmax = max(F.flat)
+    if xz_axis:
+      xax = z
+      yax = y
+    else:
+      xax = x
+      yax = y
+    im = contourf(xax, yax, F, 20, cmap=cmap, vmax=vmax, vmin=-vmax)
+
+    rcParams.update({'font.size':16, 'legend.fontsize':8})
+    tit = '$' + name[0] + '_' + name[1] + '$'
+    if xz_axis:
+      tit = '$' + name[0] + '_' + name[1] + '$'
+    title(tit)
+    #ax.text(0, 5.6, tit, horizontalalignment='center', fontsize='30')
+    axes().set_aspect('equal', 'datalim')
+    tight_layout()
+
+    if xz_axis:
+      ax.set_xlabel('$z/w_0$')
+      ax.set_ylabel('$y/w_0$')
+      xlim(0, zmax)
+      ylim(-5, 5)
+      fname = 'anim/sliceZ-%s-%02i.png' %(name, i)
+    else:
+      ax.set_xlabel('$x/w_0$')
+      ax.set_ylabel('$y/w_0$')
+      ylim(-1, 1)
+      fname = 'anim/slice-%s-%02i.png' %(name, i)
+    print 'saving', fname
+    savefig(fname)
+    if not 'show' in sys.argv:
+      close()
+
+  t = 0
+
+
   F = update(x, y, z, t)
   vmax = max(F.flat)
 
-  def update_contour_plot(t):
-    clf()
-    F = update(x, y, z, t)
-    # vmax = max(F.flat)
-    im = contourf(x, y, F, 50, cmap=cmap, vmax=vmax, vmin=-vmax)
-    #colorbar(im)
-    ax.set_aspect('equal')
-    return im,
-
   tmax = 2*pi/vort.omega
   i = 0
-  for t in linspace(0, tmax, 15):
-    update_contour_plot(t)
-    fname = 'anim/slice-%s-%02i.pdf' %(name, i)
-    print 'saving', fname
-    savefig(fname)
-    i += 1
 
+  update_contour_plot(0, 0)
   show()
 
+  for t in linspace(0, tmax, nframes):
+    update_contour_plot(t, i)
+
+    i += 1
+
+
 if '3d' in sys.argv:
+  def field(x, y, z, t):
+    if 'B' in name:
+      return vort.B(x, y, z, t)
+    elif 'E' in name:
+      return vort.E(x, y, z, t)
+    return vort.S(x, y, z, t)
+
   frame = 0
   t = 0
-  dt = 0.001
+
+  dt = 2*pi/vort.omega/nframes
   import mayavi.mlab as mlab
   from tvtk.api import tvtk
 
-  figure = mlab.figure(bgcolor=(1,1,1), fgcolor=(0,0,0), size=(1024,768))
-  mlab.view(azimuth=-153, elevation=-97, roll=-95, distance=61, focalpoint=(0, 0, 0))
+  figure = mlab.figure(bgcolor=(1,1,1), fgcolor=(0,0,0), size=(500,768))
 
   xmax = 10
   dx = 1
-  zmax = 30
+  zmax = 25
   x,y,z = mgrid[-xmax:xmax:dx, -xmax:xmax:dx, 0:zmax:dx]
-  E = vort.E(x, y, z, t)
-  B = vort.B(x, y, z, t)
-  S = vort.S(x, y, z, t)
-  u = vort.u(x, y, z, t)
 
-  size = E[0].shape[0]*E[0].shape[1]*E[0].shape[2]
+  F = field(x, y, z, t)
 
-  # qe = mlab.quiver3d(x, y, z, *E)
-  # se = qe.mlab_source
+  size = F[0].shape[0]*F[0].shape[1]*F[0].shape[2]
 
-  # qb = mlab.quiver3d(x, y, z, *B)
-  # sb = qb.mlab_source
+  q = mlab.quiver3d(x, y, z, *F)
+  s = q.mlab_source
 
-  qs = mlab.quiver3d(x, y, z, *S)
-  ss = qs.mlab_source
+  az = 15
+  mlab.outline(extent=[-xmax/2, xmax/2, -xmax/2, xmax/2, 0, zmax])
+  mlab.view(azimuth=az, elevation=70, roll=90, distance=75, focalpoint=(0, 0, zmax/2))
 
-
+  spin_dir = 1
   @mlab.animate(delay=100, ui=False)
   def anim():
-    global t, frame, E, B, S
+    global t, frame, F, az, spin_dir
     while True:
       print mlab.view(), mlab.roll()
       print frame, t
       t += dt
-      E = vort.E(x, y, z, t)
-      B = vort.B(x, y, z, t)
-      S = vort.S(x, y, z, t)
+      az += spin_dir*.5
 
-      # se.set(u=E[0].reshape(size), v=E[1].reshape(size), w=E[2].reshape(size))
-      # sb.set(u=B[0].reshape(size), v=B[1].reshape(size), w=B[2].reshape(size))
-      ss.set(u=S[0].reshape(size), v=S[1].reshape(size), w=S[2].reshape(size))
+      mlab.view(azimuth=az, distance=60, focalpoint=(0, 0, zmax/2))
+
+      F = field(x, y, z, t)
+
+      s.set(u=F[0].reshape(size), v=F[1].reshape(size), w=F[2].reshape(size))
       yield
-      # figure.scene.save("anim/test-%02i.png" %frame)
+      fname = "anim/3d-%s-%02i.png" %(name, frame)
+      print 'saving', fname
+      figure.scene.save(fname)
       frame += 1
+      if frame > nframes/2:
+        spin_dir = -1
+      if frame > nframes:
+        exit(0)
 
 
   a = anim()
