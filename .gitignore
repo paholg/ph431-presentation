@@ -10,5 +10,6 @@
 *.gz
 *.snm
 *.dvi
+*.tex\#
 auto
 .updated
