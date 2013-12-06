@@ -1,5 +1,7 @@
 \documentclass[10pt]{article}
 \usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{IEEEtrantools}
 
 %%% Standard
 \usepackage[margin=1in]{geometry} % One inch margins
@@ -12,10 +14,6 @@
 \parskip \psl % Place a space between paragraphs instead
 \usepackage{comment} % Adds \comment{} environment
 \usepackage{lastpage} % For referencing last page
-\usepackage{enumitem} % Include for \setlist{}
-\setlist{nolistsep} % More compact spacing between environments
-\setlist[itemize]{leftmargin=*} % Nice margins for itemize
-\setlist[enumerate]{leftmargin=*} % and enumerate environments
 
 %%% Standard math:
 \usepackage{amsfonts,amssymb,amsmath,amsthm} % Math packages
@@ -43,6 +41,13 @@
 \newcommand{\cx}[1]{\widetilde{#1}}
 
 %%% Sections:
+\fancyhead{}
+	\fancyhead[L]{Perlin, Lurie-Gregg, Sherer, Kratzer}
+	\fancyhead[C]{
+		Ph431 - Final Report
+	 	}
+	\fancyhead[R]{\today}
+
 \usepackage{sectsty,titlesec} % Section options
 \sectionfont{\large} % Section size
 
@@ -50,25 +55,49 @@
 \cfoot{\thepage~of \pageref{LastPage}} % "X of Y" page labeling
 
 \begin{document}
-
-\section*{Generation}
+%-----------Grant's Generation Section--------------------------------
+\section*{Generation of Orbital Angular Momentum Modes}
 \subsection*{Multilayer Spherical Phase Plates}
-Using an electron beam, manufacturers are able to deposit SiO$_2$ into multilevel steps onto a substrate (Fig. \ref{mspp}). As the beam passes through this setup, the varying thickness causes the phase shift to differ based on the azimuthal angle. This causes the beam to develop a helical phase front, and consequently  form an optical vortex. In an ideal situation, the thickness of the phase plate would continuously increase rather than discrete intervals which would allow for a perfectly helical phase front, but the constraints of the manufacturing process do not allow for this. This method does not produce a pure Laguerre-Gaussian mode, but does effectively produce a prominent primary mode. \ref{MSPP}
-\\\\
+With the use of an electron beam, manufacturers are able to deposit SiO$_2$ in multilevel steps onto a substrate (Fig. \ref{mspp}). As a laser beam passes through this material, the varying thickness of the SiO$_2$ modulates the phase of the light over the azimuthal angle in the normal plane to the direction of propagation. This modulation causes the beam to develop a helical phase front, and consequently  form an optical vortex. Ideally, the thickness of the phase plate would vary continuously rather than discrete intervals, which would allow for a perfectly helical phase front. Constraints from the manufacturing process, however, do not allow for continuous changes in thickness, so this method does not produce a pure Laguerre-Gaussian mode \cite{MSPP}.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
-\includegraphics[scale=.5]{MSPP.jpg}
-\caption{}
+\includegraphics[scale=.5]{MSPP}
+\caption{SiO$_2$ multilevel steps on a substrate.}
 \label{mspp}
 \end{figure}
-New Line
 
 \subsection*{Computer Generated Holography}
-In CGH, an amplitude beam to be used as an optical vortex is directed through a hologram formed digitally and printed with extremely high resolution. The process for this formation is to incorporate both a planar wave used for reference, and the desired hologram obtained from an object wave. As these waves are combined, they for an interference pattern that can be printed and used as a filament for the optical vortex. When the beam propagates through this filament, there are an infinite number of diffraction orders produced with the first order beam containing the optical vortex. \ref{CGH}
-\\\\\begin{center}
-\includegraphics[scale=.3]{CGH.jpg}
-\end{center}
+In CGH, an amplitude beam to be used as an optical vortex is directed through a hologram formed digitally and printed with extremely high resolution. The process for this formation is to incorporate both a planar wave used for reference, and the desired hologram obtained from an object wave. As these waves are combined, they for an interference pattern that can be printed and used as a filament for the optical vortex. When the beam propagates through this filament, there are an infinite number of diffraction orders produced with the first order beam containing the optical vortex. \cite{CGH}
+\begin{figure}
+\centering
+\includegraphics[scale=.2]{CGH.jpg}
+\caption{Optical interference pattern.}
+\label{}
+\end{figure}
+
+
+\newpage
+\subsection*{Generation of Twisted Radio Waves}
+Using a helical satellite dish, a team of physicists from Italy generated and sent a radio wave that corresponds to an $l=1$ helical vortex wave. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{helical_dish}
+\caption{A helical dish used to transmit a twisted radio frequency.\cite{radio}}
+\label{dish}
+\end{figure}
+
+
+
+
+
+%--------------Aaron's Application Section ---------------------------
+\section*{Application: Producing and Detecting Non-interferring Othogonal Modes}
+Using the 'twisted' radio waves produced by the helical dish and antenna in Fig. \ref{dish} and an untwisted radio wave, the team of physicists from Italy were able to transmit and receive two separate radio signals on the same frequency. These signals were crossed in space, and because of the orthogonal nature of the modes, did not interefere with each other. Other scientists have said in the past that it is not possible to produce these twisted radio signals far away from the dish (any further than the width of the dish), yet the group was able to transmit the signal across a significant distance (equal to more than 50 times the diamter of the dish). \\
+\\
+The Tamburini group uses the same profile equation equation ($u$) for their diverging electromagnetic wave. They used a $\sim$2.4 GHz radio transmission generated from two 2 Watt radio transmitters\cite{radio}. The main difference between the experiment performed and the calculations included in this report is that the topological charge $l$ is 1 in their experiment and $l=3$ for the calculations included. A radio transmitter can be made to fit the helicity of our topilogical charge.
+
 
 
 
@@ -109,36 +138,107 @@ In particular, for $\p{\ell,p}=\p{3,1}$:
 In the Coulomb gauge, we have $\del V=0$; for mutually perpendicular
 $\v E$, $\v B$, and $\v k$ we must also have $\v k=k\uv z$. We can
 then get the following electric ($\v E$) and magnetic ($\v B$) fields
-from the complex component $\v A_I$ of the given vector potential:
+from the complex vector potential $\v A_I$:
 \begin{align*}
-  \v E=-\omega\v A_I=-\omega A_I\uv x &&& \v B=-\v k\times\v
-  A_I=-kA_I\uv y
+  \v E=i\omega\v A &&& \v B=-\del \times\v A
 \end{align*}
+
 The energy density $u$ is given by:
 \begin{align*}
-  u=\f12\p{\epsilon E^2+B^2/\mu} =\f12\p{\omega^2A_I^2+k^2A_I^2/\mu}
-  =\f12\p{\epsilon\omega^2+\f{\omega^2}{c^2\mu}}A_I^2
-  =\epsilon\omega^2A_I^2
+  u=\f12\p{\epsilon E^2+B^2/\mu} 
 \end{align*}
+
 The Poynting vector $\v S$ is given by:
 \begin{align*}
-  \v S&=\v E\times\v B/\mu =-\omega\v A_I\times\p{-\v k\times\v
-    A_I}/\mu =\f\omega\mu kA_I^2\uv k =\f{\omega^2}{c\mu}A_I^2\uv k
-  =c\epsilon\omega^2A_I^2\uv k =cu\uv z
+  \v S&=\v E\times\v B/\mu 
 \end{align*}
+
 Beam intensity $I$ is given by:
 \begin{align*}
   I=\f{c\epsilon}2E^2=\f c2\epsilon\omega^2A_I^2=cu/2
 \end{align*}
+
 The Maxwell stress tensor $\sigma_{ij}$ in our case is given by:
 \begin{align*}
   \sigma_{ij}=\epsilon\p{E_iE_j-\f12\delta_{ij}E^2}
   +\f1\mu\p{B_iB_j-\f12\delta_{ij}B^2} =\delta_{ij}\f12\p{\epsilon
     E^2+B^2/\mu}=\delta_{ij}u
 \end{align*}
+
 The force per unit volume $\v f=f_i\uv e_i$ on matter is in turn:
 \begin{align*}
   f_i=\d_k\sigma_{ik}-\d_tS_i/c^2=\d_iu-\delta_{iz}\d_tu/c
 \end{align*}
+
+
+
+
+
+\section*{Plotting the Results}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{Ex-z-0-t-0}
+\caption{$\hat{x}$ component of the calculated electric field.}
+\label{g:Ex}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{By-z-0-t-0}
+\includegraphics[scale=0.4]{Bz-z-0-t-0}
+\caption{$\hat{y}$ and $\hat{z}$  component of the calculated magnetic field field.}
+\label{g:By}
+\end{figure}
+
+
+
+
+
+
+
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{Sy-z-0-t-0}
+\includegraphics[scale=0.4]{Sz-z-0-t-0}
+\caption{$\hat{y}$ and $\hat{z}$ component of the calculated electric field.}
+\label{g:Sy}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{fmag-z-0-t-0}
+\includegraphics[scale=0.4]{fx-z-0-t-0}
+\includegraphics[scale=0.4]{fy-z-0-t-0}
+\includegraphics[scale=0.4]{fz-z-0-t-0}
+\caption{(Left to right, top to bottom) Magnitude, $\hat{x}$, $\hat{y}$ and $\hat{z}$ components of the calculated force per unit volume.}
+\label{g:F}
+\end{figure}
+
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{u-z-0-t-0}
+\caption{Energy density $U$ of the electromagnetic wave, which is proportional to the intensity $I$ of the wave}
+\label{g:F}
+\end{figure}
+
+
+
+\section*{Statement of Contribution}
+\textbf{David --} Early research \\
+\textbf{Grant --} Generation of vortex summary \\
+\textbf{Aaron --} Application of vortex summary \\
+\textbf{Michael --} Derivation of plotted quantities \\
+\textbf{Paho --} Plotting\\
+
+\bibliographystyle{IEEEtran} 
+\bstctlcite{BSTcontrol}
+\bibliography{optvort}
 
 \end{document}
