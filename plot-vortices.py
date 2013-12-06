@@ -169,9 +169,9 @@ xz_axis = False
 if 'Z' in sys.argv:
   xz_axis = True
   z = arange(0, zmax+dx/2, dx)
-  x = arange(-xmax, xmax+dx/2, dx)
-  z, x = meshgrid(z, x)
-  y = .75
+  y = arange(-xmax, xmax+dx/2, dx)
+  z, y = meshgrid(z, y)
+  x = 0
 
 
 if 'slice' in sys.argv:
@@ -198,7 +198,7 @@ if 'slice' in sys.argv:
     # vmax = max(F.flat)
     if xz_axis:
       xax = z
-      yax = x
+      yax = y
     else:
       xax = x
       yax = y
@@ -207,7 +207,7 @@ if 'slice' in sys.argv:
     rcParams.update({'font.size':16, 'legend.fontsize':8})
     tit = '$' + name[0] + '_' + name[1] + '$'
     if xz_axis:
-      tit = '$' + name[0] + '_' + name[1] + '\quad y/w_0 = %0.2f$' %y
+      tit = '$' + name[0] + '_' + name[1] + '$'
     title(tit)
     #ax.text(0, 5.6, tit, horizontalalignment='center', fontsize='30')
     axes().set_aspect('equal', 'datalim')
@@ -215,7 +215,7 @@ if 'slice' in sys.argv:
 
     if xz_axis:
       ax.set_xlabel('$z/w_0$')
-      ax.set_ylabel('$x/w_0$')
+      ax.set_ylabel('$y/w_0$')
       xlim(0, zmax)
       ylim(-5, 5)
       fname = 'anim/sliceZ-%s-%02i.png' %(name, i)
