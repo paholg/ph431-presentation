@@ -2,6 +2,7 @@
 \usepackage{beamerthemelined}
 \usepackage{pstricks}
 \usepackage{animate}
+\usepackage{graphicx}
 
 \setbeamertemplate{navigation symbols}{}
 \usepackage{caption}
@@ -17,17 +18,18 @@
 
 %%% Standard math:
 \usepackage{amsfonts,amssymb,amsmath,amsthm} % Math packages
-\usepackage{braket} % Bra-ket notation stuff
 \newcommand{\st}{\displaystyle} % For making small math big
 \renewcommand{\t}{\text} % For text in math environment
 \renewcommand{\c}{\cdot} % Multiplication dot in math
 \newcommand{\f}[2]{\dfrac{#1}{#2}} % Shortcut for fractions
 \newcommand{\p}[1]{\left(#1\right)} % Parenthesis
 \renewcommand{\sp}[1]{\left[#1\right]} % Square parenthesis
-\renewcommand{\set}[1]{\left\{#1\right\}} % Curly parenthesis
+\newcommand{\set}[1]{\left\{#1\right\}} % Curly parenthesis
 \newcommand{\abs}[1]{\left|#1\right|} % Absolute value
 
 %%% Physics symbols, vectors
+\let\vepsilon\epsilon
+\let\vphi\phi
 \renewcommand{\epsilon}{\varepsilon} % Prettier epsilon
 \renewcommand{\phi}{\varphi} % Prettier phi
 \renewcommand{\l}{\ell} % Prettier l
@@ -35,10 +37,11 @@
 \newcommand{\uv}[1]{\hat{\boldsymbol{\mathrm{#1}}}} % Unit vectors
 \newcommand{\del}{\v\nabla} % Del operator
 \renewcommand{\d}{\partial} % Partial d
-\newcommand{\fd}[2]{\f{d #1}{d #2}} % Derivative
-\newcommand{\sd}[2]{\f{d^2 #1}{d^2 #2}} % Derivative
-\newcommand{\fpd}[2]{\f{\d #1}{\d #2}} % Partial derivative
-\newcommand{\spd}[2]{\f{\d^2 #1}{\d^2 #2}} % Partial derivative
+\newcommand{\fd}[2]{\f{d #1}{d #2}} % First derivative
+\newcommand{\sd}[2]{\f{d^2 #1}{d^2 #2}} % Second derivative
+\newcommand{\fpd}[2]{\f{\d #1}{\d #2}} % First partial derivative
+\newcommand{\spd}[2]{\f{\d^2 #1}{\d^2 #2}} % Second partial derivative
+\newcommand{\cxv}[1]{\v{\widetilde{#1}}} % Complex variable
 
 \title{Investigating an Optical Vortex (THIS BEGS FOR A NEW TITLE!!!111!!!@!@!!!!)}
 \author{Aaron Kratzer, David Grant, Paho Lurie-Gregg,
@@ -63,7 +66,7 @@
     \end{items}
     \column{0.4\textwidth}
     \begin{figure}
-      \includegraphics[width=\columnwidth]{MSPP.jpg}
+      \includegraphics[width=\columnwidth]{MSPP}
       \caption{SiO$_2$ Phase Plate}
       \label{MSPP}
     \end{figure}
@@ -83,32 +86,28 @@
 \end{frame}
 
 \begin{frame}
-  \centering
+  \frametitle{Vector potential}
   \begin{align*}
-    \v A\p{r,\phi,z}&=A_0\f{w_0}{w}\sp{\f{r\sqrt 2}{w}}^\ell
-    L^{\p{\ell}}_p\sp{2\f{r^2}{w^2}}\exp\sp{-\f{r^2}{w^2}}
-    \exp\sp{-i\f{kr^2z}{2\p{z^2+z_R^2}}} \\
-    &~~~~\times\exp\sp{i\p{2p+\ell+1}\arctan\p{\f z{z_R}}}
-    \exp\p{i\ell\phi}\exp\p{-i\omega t} \uv x\\
-    w&=w_0\sqrt{1+z^2/z_R^2}\\
+    {\cxv A}\p{r,\phi,z}&=A_0\f{w_0}{w}\sp{\f{r\sqrt 2}{w}}^\ell
+    L^{\p{\ell}}_p\sp{2\f{r^2}{w^2}}\exp\sp{-\f{r^2}{w^2}} \\
+    &~~~\times\exp\sp{-i\f{kr^2z}{2\p{z^2+z_R^2}}}
+    \exp\sp{i\p{2p+\ell+1}\arctan\p{\f z{z_R}}} \\
+    &~~~\times\exp\p{i\ell\phi}\exp\p{-i\omega t} \uv r \\
     L^{\p{\ell}}_p\p{x}
-    & =\sum_{m=0}^p\p{-1}^m\f{\p{p+\ell}!}{\p{p-m}!\p{\ell+m}!m!}x^m\\
-    z_R&=\f12 kw_0^2
+    &=\sum_{m=0}^p\p{-1}^m\f{\p{p+\ell}!}{\p{p-m}!\p{\ell+m}!m!}x^m \\
+    L^{\p{3}}_1\p{x}&=-x+4
   \end{align*}
 \end{frame}
 
 \begin{frame}
+  \frametitle{EM fields}
   \begin{align*}
-    L^{\p{3}}_1\p{x}=-x+4\\
-    \v E=i\omega\v A &&& \v B=-\del \times\v A
-  \end{align*}
-\end{frame}
-
-\begin{frame}
-  \begin{align*}
-    u&=\f12\p{\epsilon E^2+B^2/\mu} \\
-    \v S&=\v E\times\v B/\mu \\
-    I&=\f{c\epsilon}2E^2=\f c2\epsilon\omega^2A_I^2=cu/2\\
+    \cxv E&=i\omega\cxv A \\
+    \cxv B&=\del \times\cxv A \\
+    &={\varepsilon^i}_{jk}\uv e_i\d^jA^k \\
+    &={\varepsilon^i}_{jk}\uv
+    e_i\sp{A^k\p{x^j+\delta}-A^k\p{x^j}}/\delta \\
+    \v S&=\v E\times\v B/\mu
   \end{align*}
 \end{frame}
 
@@ -117,7 +116,7 @@
     \sigma_{ij}&=\epsilon\p{E_iE_j-\f12\delta_{ij}E^2}
     +\f1\mu\p{B_iB_j-\f12\delta_{ij}B^2} \\
     &=\delta_{ij}\f12\p{\epsilon
-      E^2+B^2/\mu}=\delta_{ij}u\\
+      E^2+B^2/\mu}=\delta_{ij}u \\
     f_i&=\d_k\sigma_{ik}-\d_tS_i/c^2=\d_iu-\delta_{iz}\d_tu/c
   \end{align*}
 \end{frame}
@@ -129,11 +128,12 @@
 	\end{center}
   \begin{columns}[c]
 	\column{0.5\textwidth}
-		\begin{figure}
+  \begin{figure}
 		\includegraphics[width=\textwidth]{helical_dish}
-		\caption{A helical dish transmitter designed for the $\ell=1$ mode}
+		\caption{A helical dish transmitter designed for the $\ell=1$
+      mode}
 		\label{pic:dish}
-		\end{figure}
+  \end{figure}
 	\column{0.5\textwidth}
 		\begin{items}
 		\item First test in radio spectrum
@@ -160,12 +160,9 @@
   \end{columns}
 \end{frame}
 \begin{frame}
-Same carrier frequency (2.4GHz), 440 Hz and 1000 Hz audio signals were transmitted via the planar and twisted wave, respectively.
+  Same carrier frequency (2.4GHz), 440 Hz and 1000 Hz audio signals
+  were transmitted via the planar and twisted wave, respectively.
 \end{frame}
-
-
-
-
 
 % Animation bullshit
 % \begin{frame}
